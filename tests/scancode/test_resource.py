@@ -574,6 +574,17 @@ class TestCodebase(FileBasedTesting):
         result = [r.path for r in codebase.walk(topdown=True)]
         self.assertEqual(expected, result)
 
+    def test_skip_special_files(self):
+        test_dir = self.get_test_loc('resource/special_files')
+        codebase = Codebase(test_dir)
+        # `file2` should not appear since it is a symlink
+        expected = [
+            'special_files',
+            'special_files/file1'
+        ]
+        result = [r.path for r in codebase.walk(topdown=True)]
+        self.assertEqual(expected, result)
+
 
 class TestCodebaseCache(FileBasedTesting):
     test_data_dir = join(dirname(__file__), 'data')
